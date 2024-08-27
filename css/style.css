@@ -4,3 +4,57 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: "Poppins", sans-serif;
+    color: #444;
+    background-color: #F3F3F3;
+}
+
+input {
+    outline: none;
+}
+
+nav {
+    max-width: 95%;
+    margin-inline: auto;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+input {
+    padding-block: .5rem;
+    width: 8rem;
+    border-radius: 1.25rem;
+    border: .0625rem solid white;
+    box-shadow: 0 0 .125rem rgba(0, 0, 0, 0.382);
+    text-align: center;
+}
+
+input:focus {
+    border: .0625rem solid rgba(0, 0, 0, 0.223);
+
+}
+
+img {
+    height: 3.25rem;
+}
+
+.btns {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+button {
+    border: 0;
+    font-size: 1.5rem;
+    background-color: transparent;
+    cursor: pointer;
+}
