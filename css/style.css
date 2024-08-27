@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+ul {
+    list-style: none;
+}
+
 body {
     font-family: "Poppins", sans-serif;
     color: #444;
@@ -23,7 +27,7 @@ nav {
     align-items: center;
 }
 
-h1 {
+p {
     font-size: 1.25rem;
     font-weight: 500;
 }
@@ -57,4 +61,154 @@ button {
     font-size: 1.5rem;
     background-color: transparent;
     cursor: pointer;
+}
+
+main {
+    margin-top: 64px;
+    width: 75%;
+    margin-inline: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+}
+
+p span {
+    color: #888;
+    font-size: 14px;
+}
+
+.trans {
+    width: 55%;
+    overflow-y: scroll;
+    max-height: 500px;
+}
+
+.balance {
+    font-size: 52px;
+    font-weight: 400;
+}
+
+.element {
+    background-color: white;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #44444432 1px solid;
+    padding: 24px;
+}
+
+.label {
+    display: inline-block;
+    font-size: 12px;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.green {
+
+    background-color: #53BF7A;
+}
+
+.red {
+
+    background-color: #E9315B;
+}
+
+.date {
+    font-size: 12px;
+    margin-left: 12px;
+}
+
+.ctrl {
+    display: flex;
+    justify-content: space-between;
+}
+
+.element .balance {
+    font-size: 24px;
+}
+
+.action {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    gap: 12px;
+
+}
+
+.transfer .action,
+.close .action {
+    grid-template-columns: 1fr 1fr 1fr;
+
+}
+
+.loan .action {
+    grid-template-columns: 1fr 1fr;
+
+}
+
+.actions {
+    height: 500px;
+    width: 40%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+.transfer,
+.loan,
+.close {
+    padding: 20px;
+    height: calc(470px/3);
+    border-radius: 18px;
+}
+
+.actions h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
+.transfer {
+    background-color: #FFC703;
+}
+
+label {
+    font-size: 14px;
+}
+
+.actions input {
+    width: 100%;
+    border-radius: 7px;
+    background-color: #ffffff7c;
+    outline: none;
+    border: 0px;
+    font-size: 16px;
+    height: 30px;
+
+}
+
+.actions input:focus {
+    background-color: #ffffffbc;
+
+}
+
+.action button {
+    justify-self: start;
+    background-color: #fff;
+    border-radius: 7px;
+    height: 30px;
+    font-size: 20px;
+    padding-inline: 12px;
+}
+
+.loan {
+    background-color: #51BE7A;
+}
+
+.close {
+    background-color: #F4445D;
 }
