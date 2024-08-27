@@ -1,4 +1,33 @@
 "use strict";
+/***********ELEMENTS***********/
+let user = document.querySelector("nav .btns input:nth-child(1)");
+let pin = document.querySelector("nav .btns input:nth-child(2)");
+let enter = document.querySelector("nav .btns button");
+let header = document.querySelector("nav>p");
+let date = document.querySelector("header>p span");
+let balance = document.querySelector("header p.balance ");
+
+let transactions = document.querySelector(".trans");
+
+/**TRANSFET MONEY**/
+let transTo = document.querySelector(".transfer input:first-child");
+let transAmount = document.querySelector(".transfer input:nth-child(2)");
+let transBtn = document.querySelector(".transfer button");
+/**TRANSFET MONEY**/
+let loanAmount = document.querySelector(".loan input");
+let loanBtn = document.querySelector(".loan button");
+/**CLOSE ACCOUNT**/
+let closeUser = document.querySelector(".close input:first-child");
+let closePin = document.querySelector(".close input:nth-child(2)");
+let closeBtn = document.querySelector(".close button");
+/**FOOTER**/
+let In = document.querySelector("footer ul .green-fnt:nth-child(1)");
+let out = document.querySelector("footer ul .red-fnt");
+let interest = document.querySelectorAll("footer ul .green-fnt")[1];
+let sort = document.querySelector("footer ul button");
+let time = document.querySelector("footer .now");
+/***********HARD CODED DATA***********/
+
 const account1 = {
   owner: "Jonas Schmedtmann",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],

@@ -1,0 +1,36 @@
+@media screen and (max-width:56.25em) {
+
+    html {
+        font-size: 85%;
+    }
+
+    .ctrl {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .trans,
+    .actions {
+        width: 90%;
+    }
+
+    nav {
+        width: 100%;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    footer ul {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:37.5em) {
+    header p.balance {
+        font-size: 2rem;
+    }
+}
