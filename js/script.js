@@ -93,6 +93,14 @@ function displaymovements(customer) {
 function totalBalance(index) {
   return accounts[index].movements.reduce((acc, val) => acc + val, 0);
 }
+function calcSummary(index) {
+  let movs = accounts[index].movements;
+  let interest = accounts[index].interestRate;
+  let IN = movs.filter((i) => i > 0).reduce((ac, i) => ac + i, 0);
+  let OUT = -1 * movs.filter((i) => i < 0).reduce((ac, i) => ac + i, 0);
+  let int = (IN * interest) / 100;
+  return [IN, OUT, int];
+}
 function login() {
   let userName = user.value;
   let pinVal = pin.value;
@@ -105,8 +113,14 @@ function login() {
       displaymovements(index);
       msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
       balance.textContent = `${totalBalance(index)} €`;
+      let summary = calcSummary(index);
+      In.textContent = `${summary[0]} €`;
+      out.textContent = `${summary[1]} €`;
+      interest.textContent = `${summary[2]} €`;
       user.value = "";
       pin.value = "";
+      user.blur();
+      pin.blur();
     }
   });
 }
