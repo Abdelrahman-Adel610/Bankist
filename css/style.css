@@ -65,6 +65,7 @@ button {
 }
 
 main {
+    opacity: 0;
     margin-top: 4rem;
     width: 75%;
     margin-inline: auto;
@@ -82,7 +83,7 @@ p span {
 
 .trans {
     width: 55%;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 31.25rem;
 }
 

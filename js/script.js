@@ -2,6 +2,7 @@
 /***********ELEMENTS***********/
 let user = document.querySelector("nav .btns input:nth-child(1)");
 let pin = document.querySelector("nav .btns input:nth-child(2)");
+let app = document.querySelector("main");
 let enter = document.querySelector("nav .btns button");
 let header = document.querySelector("nav>p");
 let date = document.querySelector("header>p span");
@@ -9,11 +10,11 @@ let balance = document.querySelector("header p.balance ");
 
 let transactions = document.querySelector(".trans");
 
-/**TRANSFET MONEY**/
+/**TRANSFER MONEY**/
 let transTo = document.querySelector(".transfer input:first-child");
 let transAmount = document.querySelector(".transfer input:nth-child(2)");
 let transBtn = document.querySelector(".transfer button");
-/**TRANSFET MONEY**/
+/**LOANS**/
 let loanAmount = document.querySelector(".loan input");
 let loanBtn = document.querySelector(".loan button");
 /**CLOSE ACCOUNT**/
@@ -57,3 +58,59 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
+let users = accounts.map(function (val) {
+  return {
+    user: val.owner
+      .split(" ")
+      .map((i) => i[0].toLocaleLowerCase())
+      .join(""),
+    pin: val["pin"],
+    fullName: val.owner,
+  };
+});
+/***********UTILITIES***********/
+function displaymovements(customer) {
+  let { movements: mv } = accounts[customer];
+  mv.forEach(function (val, index) {
+    let state = val > 0; //1==>deposit 0==>withdrawal
+    let transHTML = ` <div class="element">
+                    <div class="lables">
+
+                        <p class="label ${state ? "green" : "red"}">${
+      index + 1
+    } ${state ? "DEPOSIT" : "WITHDRAWAL"}</p>
+                        <span class="date">
+                            12/03/2020
+                        </span>
+                    </div>
+                    <span class="balance">
+                        ${val} €
+                    </span>
+                </div>`;
+    transactions.insertAdjacentHTML("afterbegin", transHTML);
+  });
+}
+function login() {
+  let userName = user.value;
+  let pinVal = pin.value;
+  let msg = header;
+  console.log(userName, pinVal);
+  users.forEach(function ({ user: i, pin: p, fullName: fn }, index) {
+    if (i === userName && p === +pinVal) {
+      app.style.opacity = 1;
+      displaymovements(index);
+      msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
+      user.value = "";
+      pin.value = "";
+    }
+  });
+}
+
+/***********EVENTS***********/
+enter.addEventListener("click", login);
+user.addEventListener("keydown", function (e) {
+  e.key === "Enter" && login();
+});
+pin.addEventListener("keydown", function (e) {
+  e.key === "Enter" && login();
+});
