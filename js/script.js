@@ -90,6 +90,9 @@ function displaymovements(customer) {
     transactions.insertAdjacentHTML("afterbegin", transHTML);
   });
 }
+function totalBalance(index) {
+  return accounts[index].movements.reduce((acc, val) => acc + val, 0);
+}
 function login() {
   let userName = user.value;
   let pinVal = pin.value;
@@ -98,8 +101,10 @@ function login() {
   users.forEach(function ({ user: i, pin: p, fullName: fn }, index) {
     if (i === userName && p === +pinVal) {
       app.style.opacity = 1;
+      transactions.innerHTML = "";
       displaymovements(index);
       msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
+      balance.textContent = `${totalBalance(index)} €`;
       user.value = "";
       pin.value = "";
     }
