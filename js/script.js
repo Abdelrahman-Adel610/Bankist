@@ -28,7 +28,7 @@ let interest = document.querySelectorAll("footer ul .green-fnt")[1];
 let sort = document.querySelector("footer ul button");
 let time = document.querySelector("footer .now");
 /***********HARD CODED DATA***********/
-
+let activeAccount;
 const account1 = {
   owner: "Jonas Schmedtmann",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
@@ -58,6 +58,12 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
+accounts.forEach((obj) => {
+  obj.userName = obj.owner
+    .split(" ")
+    .map((i) => i[0].toLocaleLowerCase())
+    .join("");
+});
 let users = accounts.map(function (val) {
   return {
     user: val.owner
@@ -101,30 +107,55 @@ function calcSummary(index) {
   let int = (IN * interest) / 100;
   return [IN, OUT, int];
 }
+function updateInterface(index) {
+  let msg = header;
+  let fn = accounts[index].owner;
+  transactions.innerHTML = "";
+  displaymovements(index);
+  msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
+  balance.textContent = `${totalBalance(index)} €`;
+  let summary = calcSummary(index);
+  In.textContent = `${summary[0]} €`;
+  out.textContent = `${summary[1]} €`;
+  interest.textContent = `${summary[2]} €`;
+  user.value = "";
+  pin.value = "";
+  user.blur();
+  pin.blur();
+}
 function login() {
   let userName = user.value;
-  let pinVal = pin.value;
-  let msg = header;
-  console.log(userName, pinVal);
-  users.forEach(function ({ user: i, pin: p, fullName: fn }, index) {
-    if (i === userName && p === +pinVal) {
-      app.style.opacity = 1;
-      transactions.innerHTML = "";
-      displaymovements(index);
-      msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
-      balance.textContent = `${totalBalance(index)} €`;
-      let summary = calcSummary(index);
-      In.textContent = `${summary[0]} €`;
-      out.textContent = `${summary[1]} €`;
-      interest.textContent = `${summary[2]} €`;
-      user.value = "";
-      pin.value = "";
-      user.blur();
-      pin.blur();
-    }
-  });
+  let pinVal = +pin.value;
+
+  activeAccount = accounts.find(
+    (i) => i.userName === userName && i.pin === pinVal
+  );
+  if (activeAccount) {
+    app.style.opacity = 1;
+    updateInterface(accounts.indexOf(activeAccount));
+  }
 }
 
+function transferFromto(a, b, amount) {
+  if (totalBalance(accounts.indexOf(a)) < amount || a === b) {
+    alert("Invalid transfer !!!");
+    return;
+  }
+  a.movements.push(-1 * amount);
+  b.movements.push(1 * amount);
+  updateInterface(accounts.indexOf(a));
+}
+function transfer() {
+  let to = transTo.value;
+  let amount = transAmount.value;
+  let from = activeAccount;
+  let toObj = accounts.find((i) => i.userName === to);
+  from && toObj && transferFromto(from, toObj, amount);
+  transTo.value = "";
+  transAmount.value = "";
+  transAmount.blur();
+  transTo.blur();
+}
 /***********EVENTS***********/
 enter.addEventListener("click", login);
 user.addEventListener("keydown", function (e) {
@@ -132,4 +163,13 @@ user.addEventListener("keydown", function (e) {
 });
 pin.addEventListener("keydown", function (e) {
   e.key === "Enter" && login();
+});
+transBtn.addEventListener("click", function () {
+  transfer();
+});
+transTo.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") transfer();
+});
+transAmount.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") transfer();
 });
