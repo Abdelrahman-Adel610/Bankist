@@ -156,6 +156,23 @@ function transfer() {
   transAmount.blur();
   transTo.blur();
 }
+function logOut() {
+  app.style.opacity = "0";
+  activeAccount = "";
+}
+function closeAcc() {
+  let user = closeUser.value;
+  let pin = closePin.value;
+  let index = accounts.findIndex((i) => i.userName === user && i.pin === +pin);
+  let acc = undefined;
+  if (index >= 0) acc = accounts[index];
+  index >= 0 && accounts.splice(index, 1) && acc === activeAccount && logOut();
+  closeUser.value = "";
+  closePin.value = "";
+  closeUser.blur();
+  closePin.blur();
+}
+
 /***********EVENTS***********/
 enter.addEventListener("click", login);
 user.addEventListener("keydown", function (e) {
@@ -164,12 +181,21 @@ user.addEventListener("keydown", function (e) {
 pin.addEventListener("keydown", function (e) {
   e.key === "Enter" && login();
 });
-transBtn.addEventListener("click", function () {
-  transfer();
-});
+transBtn.addEventListener("click", transfer);
 transTo.addEventListener("keydown", function (e) {
   if (e.key === "Enter") transfer();
 });
 transAmount.addEventListener("keydown", function (e) {
   if (e.key === "Enter") transfer();
+});
+closeBtn.addEventListener("click", closeAcc);
+closeUser.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    closeAcc();
+  }
+});
+closePin.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    closeAcc();
+  }
 });
