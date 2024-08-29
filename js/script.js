@@ -156,6 +156,18 @@ function transfer() {
   transAmount.blur();
   transTo.blur();
 }
+
+function requestLoan() {
+  let amount = +loanAmount.value;
+  if (activeAccount.movements.some((i) => 0.1 * amount <= i)) {
+    activeAccount.movements.push(amount);
+    alert("Successful loan");
+    updateInterface(accounts.indexOf(activeAccount));
+  } else alert("Invalid loan");
+  loanAmount.value = "";
+  loanAmount.blur();
+}
+
 function logOut() {
   app.style.opacity = "0";
   activeAccount = "";
@@ -201,5 +213,11 @@ closeUser.addEventListener("keydown", function (e) {
 closePin.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     closeAcc();
+  }
+});
+loanBtn.addEventListener("click", requestLoan);
+loanAmount.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    requestLoan();
   }
 });
