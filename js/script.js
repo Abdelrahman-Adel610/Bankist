@@ -127,9 +127,9 @@ function login() {
   let userName = user.value;
   let pinVal = +pin.value;
 
-  activeAccount = accounts.find(
-    (i) => i.userName === userName && i.pin === pinVal
-  );
+  activeAccount =
+    accounts.find((i) => i.userName === userName && i.pin === pinVal) ||
+    activeAccount;
   if (activeAccount) {
     app.style.opacity = 1;
     updateInterface(accounts.indexOf(activeAccount));
@@ -166,7 +166,11 @@ function closeAcc() {
   let index = accounts.findIndex((i) => i.userName === user && i.pin === +pin);
   let acc = undefined;
   if (index >= 0) acc = accounts[index];
-  index >= 0 && accounts.splice(index, 1) && acc === activeAccount && logOut();
+  index >= 0 &&
+    accounts.splice(index, 1) &&
+    (alert("Closed Successfully") || 1) &&
+    acc === activeAccount &&
+    logOut();
   closeUser.value = "";
   closePin.value = "";
   closeUser.blur();
