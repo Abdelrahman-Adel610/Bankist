@@ -29,6 +29,7 @@ let sort = document.querySelector("footer ul button");
 let time = document.querySelector("footer .now");
 /***********HARD CODED DATA***********/
 let activeAccount;
+let sortState = 0; //0==>notSorted     1==>sorted
 const account1 = {
   owner: "Jonas Schmedtmann",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
@@ -64,19 +65,14 @@ accounts.forEach((obj) => {
     .map((i) => i[0].toLocaleLowerCase())
     .join("");
 });
-let users = accounts.map(function (val) {
-  return {
-    user: val.owner
-      .split(" ")
-      .map((i) => i[0].toLocaleLowerCase())
-      .join(""),
-    pin: val["pin"],
-    fullName: val.owner,
-  };
-});
+
 /***********UTILITIES***********/
 function displaymovements(customer) {
-  let { movements: mv } = accounts[customer];
+  let { movements: mov } = accounts[customer];
+  let mv = [...mov];
+  if (sortState) {
+    mv.sort((a, b) => a - b);
+  }
   mv.forEach(function (val, index) {
     let state = val > 0; //1==>deposit 0==>withdrawal
     let transHTML = ` <div class="element">
@@ -132,6 +128,7 @@ function login() {
     activeAccount;
   if (activeAccount) {
     app.style.opacity = 1;
+    sortState = 0;
     updateInterface(accounts.indexOf(activeAccount));
   }
 }
@@ -220,4 +217,8 @@ loanAmount.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     requestLoan();
   }
+});
+sort.addEventListener("click", function () {
+  sortState = !sortState;
+  updateInterface(accounts.indexOf(activeAccount));
 });
