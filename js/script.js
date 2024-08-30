@@ -7,6 +7,7 @@ let enter = document.querySelector("nav .btns button");
 let header = document.querySelector("nav>p");
 let date = document.querySelector("header>p span");
 let balance = document.querySelector("header p.balance ");
+let loginDate = document.querySelector("header p span");
 
 let transactions = document.querySelector(".trans");
 
@@ -121,7 +122,17 @@ function updateInterface(index) {
   transactions.innerHTML = "";
   displaymovements(index);
   msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
+  /***********************************************************/
+  /**HEADER INFO**/
   balance.textContent = `${totalBalance(index).toFixed(2)} €`;
+  let today = new Date();
+  let day = today.getDate();
+  let month = today.getMonth() + 1;
+  let year = today.getFullYear();
+  let hours = today.getHours();
+  let mins = today.getMinutes();
+  loginDate.textContent = `As of ${day}/${month}/${year}, ${hours}:${mins}`;
+  /***********************************************************/
   let summary = calcSummary(index);
   In.textContent = `${summary[0].toFixed(2)} €`;
   out.textContent = `${summary[1].toFixed(2)} €`;
