@@ -98,7 +98,7 @@ function displaymovements(customer) {
                         </span>
                     </div>
                     <span class="balance">
-                        ${val} €
+                        ${val.toFixed(2)} €
                     </span>
                 </div>`;
     transactions.insertAdjacentHTML("afterbegin", transHTML);
@@ -121,11 +121,11 @@ function updateInterface(index) {
   transactions.innerHTML = "";
   displaymovements(index);
   msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
-  balance.textContent = `${totalBalance(index)} €`;
+  balance.textContent = `${totalBalance(index).toFixed(2)} €`;
   let summary = calcSummary(index);
-  In.textContent = `${summary[0]} €`;
-  out.textContent = `${summary[1]} €`;
-  interest.textContent = `${summary[2]} €`;
+  In.textContent = `${summary[0].toFixed(2)} €`;
+  out.textContent = `${summary[1].toFixed(2)} €`;
+  interest.textContent = `${summary[2].toFixed(2)} €`;
   user.value = "";
   pin.value = "";
   user.blur();
@@ -156,7 +156,7 @@ function transferFromto(a, b, amount) {
 }
 function transfer() {
   let to = transTo.value;
-  let amount = transAmount.value;
+  let amount = Math.round(transAmount.value);
   let from = activeAccount;
   let toObj = accounts.find((i) => i.userName === to);
   from && toObj && transferFromto(from, toObj, amount);
@@ -167,7 +167,7 @@ function transfer() {
 }
 
 function requestLoan() {
-  let amount = +loanAmount.value;
+  let amount = Math.round(loanAmount.value);
   if (activeAccount.movements.some((i) => 0.1 * amount <= i)) {
     activeAccount.movements.push(amount);
     alert("Successful loan");
