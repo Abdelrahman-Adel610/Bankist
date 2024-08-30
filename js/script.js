@@ -88,6 +88,9 @@ function displaymovements(customer) {
   }
   mv.forEach(function (val, index) {
     let state = val > 0; //1==>deposit 0==>withdrawal
+    let [year, month, day] = activeAccount.movementsDates[index]
+      .slice(0, 10)
+      .split("-");
     let transHTML = ` <div class="element">
                     <div class="lables">
 
@@ -95,7 +98,7 @@ function displaymovements(customer) {
       index + 1
     } ${state ? "DEPOSIT" : "WITHDRAWAL"}</p>
                         <span class="date">
-                            12/03/2020
+                            ${day}/${month}/${year}
                         </span>
                     </div>
                     <span class="balance">
