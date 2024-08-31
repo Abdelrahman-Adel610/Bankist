@@ -92,9 +92,7 @@ function displaymovements(customer) {
 
     /*******************************************************/
     /************GENERATING MOVEMENT DATE************/
-    let date = `${indate.getDate()}/${
-      indate.getMonth() + 1
-    }/${indate.getFullYear()}`;
+    let date = Intl.DateTimeFormat(activeAccount.locale).format(indate);
 
     let passedDays = Math.round(
       Math.abs((new Date() - indate) / (1000 * 60 * 60 * 24))
@@ -150,13 +148,14 @@ function updateInterface(index) {
   /***********************************************************/
   /**HEADER INFO**/
   balance.textContent = `${totalBalance(index).toFixed(2)} €`;
-  let today = new Date();
-  let day = `${today.getDate()}`.padStart(2, 0);
-  let month = `${today.getMonth() + 1}`.padStart(2, 0);
-  let year = today.getFullYear();
-  let hours = `${today.getHours()}`.padStart(2, 0);
-  let mins = `${today.getMinutes()}`.padStart(2, 0);
-  loginDate.textContent = `As of ${day}/${month}/${year}, ${hours}:${mins}`;
+
+  loginDate.textContent = Intl.DateTimeFormat(activeAccount.locale, {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  }).format(new Date());
   /***********************************************************/
   let summary = calcSummary(index);
   In.textContent = `${summary[0].toFixed(2)} €`;
