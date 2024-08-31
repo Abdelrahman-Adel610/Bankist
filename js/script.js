@@ -80,6 +80,13 @@ accounts.forEach((obj) => {
 });
 
 /***********UTILITIES***********/
+function currencyFormatter(locale, curr, value) {
+  return new Intl.NumberFormat(locale, {
+    currency: curr,
+    style: "currency",
+  }).format(value);
+}
+
 function displaymovements(customer) {
   let { movements: mov } = accounts[customer];
   let mv = [...mov];
@@ -122,7 +129,11 @@ function displaymovements(customer) {
                         </span>
                     </div>
                     <span class="balance">
-                        ${val.toFixed(2)} €
+                        ${currencyFormatter(
+                          activeAccount.locale,
+                          activeAccount.currency,
+                          val
+                        )}
                     </span>
                 </div>`;
     transactions.insertAdjacentHTML("afterbegin", transHTML);
@@ -147,7 +158,11 @@ function updateInterface(index) {
   msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
   /***********************************************************/
   /**HEADER INFO**/
-  balance.textContent = `${totalBalance(index).toFixed(2)} €`;
+  balance.textContent = balance.textContent = currencyFormatter(
+    activeAccount.locale,
+    activeAccount.currency,
+    totalBalance(index)
+  );
 
   loginDate.textContent = Intl.DateTimeFormat(activeAccount.locale, {
     day: "numeric",
@@ -158,9 +173,21 @@ function updateInterface(index) {
   }).format(new Date());
   /***********************************************************/
   let summary = calcSummary(index);
-  In.textContent = `${summary[0].toFixed(2)} €`;
-  out.textContent = `${summary[1].toFixed(2)} €`;
-  interest.textContent = `${summary[2].toFixed(2)} €`;
+  In.textContent = currencyFormatter(
+    activeAccount.locale,
+    activeAccount.currency,
+    summary[0]
+  );
+  out.textContent = currencyFormatter(
+    activeAccount.locale,
+    activeAccount.currency,
+    summary[1]
+  );
+  interest.textContent = currencyFormatter(
+    activeAccount.locale,
+    activeAccount.currency,
+    summary[2]
+  );
   user.value = "";
   pin.value = "";
   user.blur();
