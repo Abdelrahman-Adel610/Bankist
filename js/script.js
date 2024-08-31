@@ -31,6 +31,10 @@ let time = document.querySelector("footer .now");
 /***********HARD CODED DATA***********/
 let activeAccount;
 let sortState = 0; //0==>notSorted     1==>sorted
+let sessionTimer = {
+  sec: 0,
+  min: 0,
+};
 const account1 = {
   owner: "Jonas Schmedtmann",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
@@ -80,6 +84,20 @@ accounts.forEach((obj) => {
 });
 
 /***********UTILITIES***********/
+function displayTime() {
+  let timer = new Date();
+  timer.setMinutes(sessionTimer.min);
+  timer.setSeconds(sessionTimer.sec);
+
+  time.textContent = new Intl.DateTimeFormat(navigator.language, {
+    minute: "numeric",
+    second: "numeric",
+  }).format(timer);
+}
+function resetTimer() {
+  sessionTimer.min = 10;
+  sessionTimer.sec = 0;
+}
 function currencyFormatter(locale, curr, value) {
   return new Intl.NumberFormat(locale, {
     currency: curr,
@@ -150,56 +168,63 @@ function calcSummary(index) {
   let int = (IN * interest) / 100;
   return [IN, OUT, int];
 }
-function updateInterface(index) {
+function updateInterface(index = -1) {
   let msg = header;
-  let fn = accounts[index].owner;
-  transactions.innerHTML = "";
-  displaymovements(index);
-  msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
-  /***********************************************************/
-  /**HEADER INFO**/
-  balance.textContent = balance.textContent = currencyFormatter(
-    activeAccount.locale,
-    activeAccount.currency,
-    totalBalance(index)
-  );
+  if (index === -1) {
+    msg.textContent = `Log in to get started`;
+  } else {
+    let fn = accounts[index].owner;
+    transactions.innerHTML = "";
+    displaymovements(index);
+    msg.textContent = `Good Day, ${fn.slice(0, fn.indexOf(" ") + 1)}!`;
+    /***********************************************************/
+    /**HEADER INFO**/
+    balance.textContent = balance.textContent = currencyFormatter(
+      activeAccount.locale,
+      activeAccount.currency,
+      totalBalance(index)
+    );
 
-  loginDate.textContent = Intl.DateTimeFormat(activeAccount.locale, {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  }).format(new Date());
-  /***********************************************************/
-  let summary = calcSummary(index);
-  In.textContent = currencyFormatter(
-    activeAccount.locale,
-    activeAccount.currency,
-    summary[0]
-  );
-  out.textContent = currencyFormatter(
-    activeAccount.locale,
-    activeAccount.currency,
-    summary[1]
-  );
-  interest.textContent = currencyFormatter(
-    activeAccount.locale,
-    activeAccount.currency,
-    summary[2]
-  );
-  user.value = "";
-  pin.value = "";
-  user.blur();
-  pin.blur();
+    loginDate.textContent = Intl.DateTimeFormat(activeAccount.locale, {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    }).format(new Date());
+    /***********************************************************/
+
+    let summary = calcSummary(index);
+    In.textContent = currencyFormatter(
+      activeAccount.locale,
+      activeAccount.currency,
+      summary[0]
+    );
+    out.textContent = currencyFormatter(
+      activeAccount.locale,
+      activeAccount.currency,
+      summary[1]
+    );
+    interest.textContent = currencyFormatter(
+      activeAccount.locale,
+      activeAccount.currency,
+      summary[2]
+    );
+    user.value = "";
+    pin.value = "";
+    user.blur();
+    pin.blur();
+  }
 }
 function login() {
   let userName = user.value;
   let pinVal = +pin.value;
-
+  resetTimer();
+  displayTime();
   activeAccount =
-    accounts.find((i) => i.userName === userName && i.pin === pinVal) ||
-    activeAccount;
+    accounts.find(
+      (i) => i.userName === userName && i.pin === pinVal && (resetTimer() || 1)
+    ) || activeAccount;
   if (activeAccount) {
     app.style.opacity = 1;
     sortState = 0;
@@ -212,6 +237,7 @@ function transferFromto(a, b, amount) {
     alert("Invalid transfer !!!");
     return;
   }
+  resetTimer();
   a.movements.push(-1 * amount);
   a.movementsDates.push(new Date().toISOString());
   b.movements.push(1 * amount);
@@ -233,6 +259,7 @@ function transfer() {
 }
 function checkLoan(amount) {
   if (activeAccount.movements.some((i) => 0.1 * amount <= i)) {
+    resetTimer();
     activeAccount.movements.push(amount);
     activeAccount.movementsDates.push(new Date().toISOString());
     alert("Successful loan");
@@ -249,6 +276,7 @@ function requestLoan() {
 function logOut() {
   app.style.opacity = "0";
   activeAccount = "";
+  updateInterface();
 }
 function closeAcc() {
   let user = closeUser.value;
@@ -266,7 +294,21 @@ function closeAcc() {
   closeUser.blur();
   closePin.blur();
 }
-
+setInterval(
+  function (c) {
+    displayTime();
+    if (c.sec === 0 && c.min === 0) {
+      logOut();
+    }
+    if (c.sec == 0 && c.min > 0) {
+      c.min--;
+      c.sec = 60;
+    }
+    c.sec--;
+  },
+  1000,
+  sessionTimer
+);
 /***********EVENTS***********/
 enter.addEventListener("click", login);
 user.addEventListener("keydown", function (e) {
