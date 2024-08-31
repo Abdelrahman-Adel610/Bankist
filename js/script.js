@@ -39,13 +39,13 @@ const account1 = {
 
   movementsDates: [
     "2019-11-18T21:31:17.178Z",
-    "2019-12-23T07:42:02.383Z",
-    "2020-01-28T09:15:04.904Z",
-    "2020-04-01T10:17:24.185Z",
-    "2020-05-08T14:11:59.604Z",
-    "2020-05-27T17:01:17.194Z",
-    "2020-07-11T23:36:17.929Z",
-    "2020-07-12T10:51:36.790Z",
+    "2019-12-25T07:42:02.383Z",
+    "2024-08-26T23:36:17.929Z",
+    "2024-08-27T10:51:36.790Z",
+    "2024-08-28T09:15:04.904Z",
+    "2024-08-29T10:17:24.185Z",
+    "2024-08-30T14:11:59.604Z",
+    "2024-08-31T17:01:17.194Z",
   ],
   currency: "EUR",
   locale: "pt-PT", // de-DE
@@ -88,9 +88,31 @@ function displaymovements(customer) {
   }
   mv.forEach(function (val, index) {
     let state = val > 0; //1==>deposit 0==>withdrawal
-    let [year, month, day] = activeAccount.movementsDates[index]
-      .slice(0, 10)
-      .split("-");
+    let indate = new Date(activeAccount.movementsDates[index]);
+
+    /*******************************************************/
+    /************GENERATING MOVEMENT DATE************/
+    let date = `${indate.getDate()}/${
+      indate.getMonth() + 1
+    }/${indate.getFullYear()}`;
+
+    let passedDays = Math.round(
+      Math.abs((new Date() - indate) / (1000 * 60 * 60 * 24))
+    );
+    if (passedDays <= 7) {
+      switch (passedDays) {
+        case 0:
+          date = "Today";
+          break;
+        case 1:
+          date = `Yesterday`;
+          break;
+        default:
+          date = `${passedDays} days ago`;
+          break;
+      }
+    }
+    /*******************************************************/
     let transHTML = ` <div class="element">
                     <div class="lables">
 
@@ -98,7 +120,7 @@ function displaymovements(customer) {
       index + 1
     } ${state ? "DEPOSIT" : "WITHDRAWAL"}</p>
                         <span class="date">
-                            ${day}/${month}/${year}
+                            ${date}
                         </span>
                     </div>
                     <span class="balance">
@@ -129,11 +151,11 @@ function updateInterface(index) {
   /**HEADER INFO**/
   balance.textContent = `${totalBalance(index).toFixed(2)} €`;
   let today = new Date();
-  let day = today.getDate();
-  let month = today.getMonth() + 1;
+  let day = `${today.getDate()}`.padStart(2, 0);
+  let month = `${today.getMonth() + 1}`.padStart(2, 0);
   let year = today.getFullYear();
-  let hours = today.getHours();
-  let mins = today.getMinutes();
+  let hours = `${today.getHours()}`.padStart(2, 0);
+  let mins = `${today.getMinutes()}`.padStart(2, 0);
   loginDate.textContent = `As of ${day}/${month}/${year}, ${hours}:${mins}`;
   /***********************************************************/
   let summary = calcSummary(index);
@@ -165,7 +187,9 @@ function transferFromto(a, b, amount) {
     return;
   }
   a.movements.push(-1 * amount);
+  a.movementsDates.push(new Date().toISOString());
   b.movements.push(1 * amount);
+  b.movementsDates.push(new Date().toISOString());
   updateInterface(accounts.indexOf(a));
 }
 function transfer() {
@@ -184,6 +208,7 @@ function requestLoan() {
   let amount = Math.round(loanAmount.value);
   if (activeAccount.movements.some((i) => 0.1 * amount <= i)) {
     activeAccount.movements.push(amount);
+    activeAccount.movementsDates.push(new Date().toISOString());
     alert("Successful loan");
     updateInterface(accounts.indexOf(activeAccount));
   } else alert("Invalid loan");
