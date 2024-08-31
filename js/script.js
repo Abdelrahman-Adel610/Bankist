@@ -223,21 +223,25 @@ function transfer() {
   let amount = Math.round(transAmount.value);
   let from = activeAccount;
   let toObj = accounts.find((i) => i.userName === to);
-  from && toObj && transferFromto(from, toObj, amount);
+  setTimeout(function () {
+    from && toObj && transferFromto(from, toObj, amount);
+  }, 2000);
   transTo.value = "";
   transAmount.value = "";
   transAmount.blur();
   transTo.blur();
 }
-
-function requestLoan() {
-  let amount = Math.round(loanAmount.value);
+function checkLoan(amount) {
   if (activeAccount.movements.some((i) => 0.1 * amount <= i)) {
     activeAccount.movements.push(amount);
     activeAccount.movementsDates.push(new Date().toISOString());
     alert("Successful loan");
     updateInterface(accounts.indexOf(activeAccount));
   } else alert("Invalid loan");
+}
+function requestLoan() {
+  let amount = Math.round(loanAmount.value);
+  setTimeout(checkLoan, 2000, amount);
   loanAmount.value = "";
   loanAmount.blur();
 }
