@@ -7,9 +7,6 @@ An interactive js bank application
 ![Screenshot 2024-09-01 174355](https://github.com/user-attachments/assets/65d4c728-b4f6-44a1-9ea2-b7d53feb9623)
 
 
-## 👁️ Overview
-
-The Pig Game is a fun and simple dice game built with js and styled with CSS. 🎨 In this game, two players compete to reach 100 points by rolling dice and accumulating scores. The first player to reach 100 points wins! 🏆 This project showcases the use of React's `useReducer` hook for managing complex state logic.
 
   ## Project Structure 
 
