@@ -11,8 +11,8 @@ An interactive js bank application
   ## Project Structure 
 
 - `index.html`: The main HTML file.
-- `CSS/style.css`: The CSS file for styling the game.
-- `CSS/mediaQuery.css`: Making the game responsive to all screens.
+- `CSS/style.css`: The CSS file for styling the .
+- `CSS/mediaQuery.css`: Making the site responsive to all screens.
 - `JS/script.js`: The JavaScript file containing the app logic.
   
 ## ⚙️ Features
@@ -42,12 +42,10 @@ The userName is the first letter of each name in the user's full Name (Abdelrahm
 ## Technologies Used
 
 - **HTML:** For the site skeleton. 🩻
-- **CSS:** For styling the game components. 🎨
-- **JavaScript ES6/ESnext:** For game logic and interaction. 💻
+- **CSS:** For styling components. 🎨
+- **JavaScript ES6/ESnext:** For site logic and interaction. 💻
   
 ## Installation
-
-To get started with the Pig Game project, follow these steps:
 
 1. **Clone the Repository:**
 
@@ -61,18 +59,6 @@ To get started with the Pig Game project, follow these steps:
    cd Bankist
    ```
 
-3. **Install Dependencies:**
-
-   ```bash
-   npm install
-   ```
-
-4. **Run the Development Server:**
-
-   ```bash
-   npm start
-   ```
-
 ## Usage
 
 1. Login using one of the following accounts (USRE:js   PIN:1111)      (USRE:jd   PIN:2222)
@@ -82,7 +68,7 @@ To get started with the Pig Game project, follow these steps:
    
 ## Contributing
 
-If you'd like to contribute to the Pig Game project, please follow these guidelines:
+If you'd like to contribute to the Bankist project, please follow these guidelines:
 
 1. **Fork the Repository:** 🍴
    Click the "Fork" button at the top right of the repository page.
